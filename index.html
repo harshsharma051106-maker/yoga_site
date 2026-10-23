@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YOG WITH SUMIT | Master of Yoga - Online & Home Yoga Trainer Delhi</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        yoga: {
+                            bg: '#0d131a',
+                            card: 'rgba(21, 32, 43, 0.75)',
+                            amber: '#f59e0b',
+                            gold: '#d97706',
+                            emerald: '#10b981',
+                            sage: '#84cc16',
+                            sand: '#fef3c7'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0d131a;
+            color: #f1f5f9;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism Effect */
+        .glass-panel {
+            background: rgba(21, 32, 43, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-panel:hover {
+            border-color: rgba(245, 158, 11, 0.4);
+            box-shadow: 0 0 25px rgba(245, 158, 11, 0.25);
+        }
+
+        /* Gradient Text */
+        .text-gradient-gold {
+            background: linear-gradient(135deg, #fef3c7, #f59e0b, #d97706);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Dynamic Canvas Styling */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* 3D Flip Card Container */
+        .flip-card {
+            perspective: 1000px;
+            cursor: pointer;
+            height: 440px;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        /* Trigger flip on hover or active/touched class */
+        .flip-card:hover .flip-card-inner,
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 1.5rem;
+            overflow: hidden;
+        }
+
+        .flip-card-back {
+            transform: rotateY(180deg);
+        }
+
+        /* Pulse aura for main CTA */
+        .aura-glow {
+            animation: auraPulse 3s infinite alternate;
+        }
+
+        @keyframes auraPulse {
+            0% { box-shadow: 0 0 15px rgba(245, 158, 11, 0.2); }
+            100% { box-shadow: 0 0 35px rgba(245, 158, 11, 0.6); }
+        }
+    </style>
+</head>
+<body class="antialiased relative selection:bg-amber-500 selection:text-slate-950">
+
+    <!-- Ambient Animated Canvas Background -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Header / Navigation Bar -->
+    <header class="fixed top-0 left-0 w-full z-50 glass-panel bg-slate-950/80 border-b border-amber-500/20 px-4 lg:px-12 py-3.5 transition-all">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-amber-500 via-amber-600 to-emerald-500 flex items-center justify-center text-slate-950 text-2xl font-black shadow-lg shadow-amber-500/20 group-hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-om"></i>
+                </div>
+                <div>
+                    <span class="text-xl sm:text-2xl font-black tracking-tight text-white block leading-none font-serif">
+                        YOG WITH SUMIT
+                    </span>
+                    <span class="text-[11px] font-bold text-amber-400 tracking-wider uppercase block mt-0.5">Master of Yoga • Sumit Sharma</span>
+                </div>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <nav class="hidden md:flex items-center gap-8 font-medium text-sm text-slate-300">
+                <a href="#home" class="hover:text-amber-400 transition-colors">Home</a>
+                <a href="#about" class="hover:text-amber-400 transition-colors">Importance of Yoga</a>
+                <a href="#services" class="hover:text-amber-400 transition-colors">Training Modes</a>
+                <a href="#cards" class="hover:text-amber-400 transition-colors">Photo Cards</a>
+                <a href="#contact" class="hover:text-amber-400 transition-colors">Contact & Booking</a>
+            </nav>
+
+            <!-- Quick Action Button -->
+            <div class="hidden sm:flex items-center gap-3">
+                <a href="tel:8865033703" class="flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-extrabold px-4 sm:px-5 py-2.5 rounded-xl text-sm transition-all shadow-lg shadow-amber-500/20 hover:scale-105">
+                    <i class="fa-solid fa-phone"></i>
+                    <span>8865033703</span>
+                </a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="md:hidden text-2xl text-amber-400 focus:outline-none p-2" aria-label="Toggle Navigation">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Nav Menu -->
+        <div id="mobile-menu" class="hidden md:hidden mt-3 pt-3 border-t border-slate-800 flex flex-col gap-2 font-medium text-slate-300 text-center">
+            <a href="#home" class="py-2.5 hover:bg-slate-800/60 rounded-xl">Home</a>
+            <a href="#about" class="py-2.5 hover:bg-slate-800/60 rounded-xl">Importance of Yoga</a>
+            <a href="#services" class="py-2.5 hover:bg-slate-800/60 rounded-xl">Training Modes</a>
+            <a href="#cards" class="py-2.5 hover:bg-slate-800/60 rounded-xl">Photo Cards</a>
+            <a href="#contact" class="py-2.5 hover:bg-slate-800/60 rounded-xl">Contact & Booking</a>
+            <a href="tel:8865033703" class="py-3 bg-amber-500 text-slate-950 font-bold rounded-xl flex justify-center items-center gap-2 mt-1">
+                <i class="fa-solid fa-phone"></i> Call: 8865033703
+            </a>
+        </div>
+    </header>
+
+    <main class="relative z-10 pt-24 lg:pt-28">
+
+        <!-- HERO SECTION -->
+        <section id="home" class="min-h-[85vh] flex items-center justify-center px-4 lg:px-12 py-12">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Hero Text -->
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs sm:text-sm font-semibold">
+                        <i class="fa-solid fa-spa"></i> Authentic & Professional Yoga Guidance
+                    </div>
+
+                    <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-white leading-tight font-serif">
+                        Transform Your Body, <br>
+                        <span class="text-gradient-gold">Calm Your Mind</span>
+                    </h1>
+
+                    <p class="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                        Welcome to <strong class="text-amber-400 font-bold">YOG WITH SUMIT</strong>, led by <strong class="text-white">Sumit Sharma (Master of Yoga)</strong>. Experiential online and personal offline home yoga training tailored for holistic wellness across all directions in <strong class="text-amber-300">New Delhi</strong>.
+                    </p>
+
+                    <!-- Key Service Highlights -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                        <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800/80 text-left">
+                            <i class="fa-solid fa-house-user text-amber-400 text-2xl mb-2 block"></i>
+                            <span class="text-sm font-bold text-slate-100 block">Home Yoga Trainer</span>
+                            <span class="text-xs text-slate-400">All Directions in New Delhi</span>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800/80 text-left">
+                            <i class="fa-solid fa-laptop-house text-emerald-400 text-2xl mb-2 block"></i>
+                            <span class="text-sm font-bold text-slate-100 block">Online Yoga Classes</span>
+                            <span class="text-xs text-slate-400">Personalized 1-on-1 Sessions</span>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800/80 text-left">
+                            <i class="fa-solid fa-graduation-cap text-amber-400 text-2xl mb-2 block"></i>
+                            <span class="text-sm font-bold text-slate-100 block">Master of Yoga</span>
+                            <span class="text-xs text-slate-400">Sumit Sharma (Head Teacher)</span>
+                        </div>
+                    </div>
+
+                    <!-- CTA Buttons -->
+                    <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-4">
+                        <a href="tel:8865033703" class="px-8 py-4 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-base flex items-center gap-3 shadow-xl shadow-amber-500/20 transition-all hover:scale-105">
+                            <i class="fa-solid fa-phone-volume"></i> Call Now: 8865033703
+                        </a>
+                        <a href="https://wa.me/918865033703" target="_blank" class="px-7 py-4 rounded-2xl bg-slate-900 border border-emerald-500/40 hover:border-emerald-400 text-emerald-400 hover:bg-slate-800 font-bold text-base flex items-center gap-3 transition-all hover:scale-105">
+                            <i class="fa-brands fa-whatsapp text-xl"></i> Chat on WhatsApp
+                        </a>
+                    </div>
+                </div>
+
+                <!-- HERO PROFILE CARD WITH REAL IMAGE URL PLACEHOLDER -->
+                <div class="lg:col-span-5 flex justify-center">
+                    <div class="w-full max-w-md glass-panel rounded-3xl p-7 relative overflow-hidden aura-glow">
+                        <div class="absolute -top-12 -right-12 w-36 h-36 bg-amber-500/20 rounded-full blur-3xl"></div>
+                        <div class="absolute -bottom-12 -left-12 w-36 h-36 bg-emerald-500/20 rounded-full blur-3xl"></div>
+
+                        <div class="flex items-center gap-5 mb-6">
+                            <!-- Teacher Photo URL Section -->
+                            <div class="w-24 h-24 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-700 p-1 shadow-xl shrink-0 overflow-hidden">
+                                <!-- 📌 REPLACE THIS URL WITH SUMIT SHARMA'S HERO PROFILE PHOTO URL -->
+                                <img src="https://user31973.na.imgto.link/public/20261023/0d8e2215084411b28ff9fd58-whatsapp-image-2026-10-23-at-4-05-40-pm.avif">
+                            </div>
+                            <div>
+                                <span class="text-xs font-bold text-amber-400 uppercase tracking-widest block">Head of Yoga Site</span>
+                                <h3 class="text-2xl font-black text-white font-serif">Sumit Sharma</h3>
+                                <div class="mt-1 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-semibold">
+                                    <i class="fa-solid fa-award"></i> Master of Yoga
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3.5 text-xs sm:text-sm text-slate-300 border-t border-slate-800/90 pt-5">
+                            <div class="flex items-start gap-3">
+                                <i class="fa-solid fa-location-dot text-amber-400 text-lg mt-0.5"></i>
+                                <div>
+                                    <strong class="text-white block">Location & Service Area:</strong>
+                                    <span>New Delhi (Available in ALL directions: North, South, East, West & Central Delhi)</span>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-3">
+                                <i class="fa-solid fa-mobile-screen-button text-emerald-400 text-lg"></i>
+                                <div>
+                                    <strong class="text-white block">Mobile Number:</strong>
+                                    <a href="tel:8865033703" class="text-emerald-400 font-bold hover:underline">+91 8865033703</a>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-3">
+                                <i class="fa-solid fa-layer-group text-amber-400 text-lg"></i>
+                                <div>
+                                    <strong class="text-white block">Mode of Training:</strong>
+                                    <span>Both Online & Offline Home Classes</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 pt-4 border-t border-slate-800/90 flex items-center justify-between text-xs text-slate-400">
+                            <span><i class="fa-solid fa-circle-check text-emerald-400 mr-1"></i> Certified Expert</span>
+                            <span class="text-amber-400 font-semibold">Personalized Programs</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- IMPORTANCE OF YOGA SECTION -->
+        <section id="about" class="py-20 px-4 lg:px-12 bg-slate-950/60 border-y border-amber-500/10">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center max-w-3xl mx-auto mb-14">
+                    <span class="text-xs font-bold text-amber-400 uppercase tracking-widest block mb-2">&lt; Pure Essence &gt;</span>
+                    <h2 class="text-3xl sm:text-5xl font-extrabold text-white font-serif">The Importance of Yoga</h2>
+                    <p class="text-slate-400 mt-4 text-sm sm:text-base leading-relaxed">
+                        In today's fast-paced world, Yoga is not just exercise—it is a transformative lifestyle that harmonizes body, mind, and soul.
+                    </p>
+                </div>
+
+                <!-- Explanation Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="glass-panel rounded-3xl p-8 hover:-translate-y-1 transition-transform">
+                        <div class="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 text-3xl mb-6">
+                            <i class="fa-solid fa-child-reaching"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3 font-serif">Physical Strength & Flexibility</h3>
+                        <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                            Practicing yoga postures (Asanas) improves body posture, builds core muscle strength, lubricates joints, and enhances internal metabolic organ function.
+                        </p>
+                    </div>
+
+                    <div class="glass-panel rounded-3xl p-8 hover:-translate-y-1 transition-transform">
+                        <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-3xl mb-6">
+                            <i class="fa-solid fa-brain"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3 font-serif">Mental Peace & Stress Relief</h3>
+                        <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                            Through structured breathwork (Pranayama) and meditation, Yoga calms the nervous system, alleviates anxiety, enhances mental clarity, and boosts daily energy.
+                        </p>
+                    </div>
+
+                    <div class="glass-panel rounded-3xl p-8 hover:-translate-y-1 transition-transform">
+                        <div class="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-300 text-3xl mb-6">
+                            <i class="fa-solid fa-heart-pulse"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3 font-serif">Holistic Healing & Balance</h3>
+                        <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                            Yoga restores harmony between mind and body, helps manage chronic ailments, improves sleep quality, and leads to sustainable long-term vitality.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Quote Banner -->
+                <div class="mt-12 p-8 rounded-3xl glass-panel text-center max-w-4xl mx-auto border border-amber-500/30">
+                    <i class="fa-solid fa-quote-left text-3xl text-amber-400/40 mb-3 block"></i>
+                    <p class="text-base sm:text-xl text-slate-200 italic font-serif leading-relaxed">
+                        "Yoga is the journey of the self, through the self, to the self. It brings dynamic balance in physical movement and absolute stillness in mind."
+                    </p>
+                    <span class="text-xs font-bold text-amber-400 tracking-wider uppercase block mt-4">— Sumit Sharma (Master of Yoga)</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- TRAINING MODES SECTION -->
+        <section id="services" class="py-20 px-4 lg:px-12">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <span class="text-xs font-bold text-amber-400 uppercase tracking-widest block mb-2">&lt; How We Train &gt;</span>
+                    <h2 class="text-3xl sm:text-5xl font-extrabold text-white font-serif">Online & Offline Yoga Training</h2>
+                    <p class="text-slate-400 mt-3 text-sm sm:text-base">Customized training programs designed according to your body type, goals, and daily schedule.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Offline Home Yoga Trainer Card -->
+                    <div class="glass-panel rounded-3xl p-8 relative overflow-hidden group border-2 border-amber-500/30 hover:border-amber-400 transition-all">
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="w-16 h-16 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-3xl">
+                                <i class="fa-solid fa-house-chimney"></i>
+                            </div>
+                            <span class="text-xs font-extrabold px-3.5 py-1.5 rounded-full bg-amber-500 text-slate-950 uppercase tracking-wider">
+                                All Over New Delhi
+                            </span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-3 font-serif">Offline Home Yoga Trainer</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed mb-6">
+                            Enjoy personalized 1-on-1 yoga instruction in the comfort of your own home. Sumit Sharma travels across all locations in <strong class="text-amber-300">New Delhi</strong> (North, South, East, West, Central Delhi).
+                        </p>
+                        <ul class="space-y-3 text-xs sm:text-sm text-slate-300 mb-8">
+                            <li class="flex items-center gap-3">
+                                <i class="fa-solid fa-circle-check text-amber-400 text-base"></i>
+                                <span>Direct hands-on posture alignment and adjustment</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <i class="fa-solid fa-circle-check text-amber-400 text-base"></i>
+                                <span>Personalized therapeutic yoga for back pain, diabetes & stress</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <i class="fa-solid fa-circle-check text-amber-400 text-base"></i>
+                                <span>Flexible morning and evening home visit slots</span>
+                            </li>
+                        </ul>
+                        <a href="tel:8865033703" class="w-full py-3.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm flex items-center justify-center gap-2 transition-all">
+                            <i class="fa-solid fa-phone"></i> Book Home Session: 8865033703
+                        </a>
+                    </div>
+
+                    <!-- Online Yoga Classes Card -->
+                    <div class="glass-panel rounded-3xl p-8 relative overflow-hidden group border-2 border-emerald-500/30 hover:border-emerald-400 transition-all">
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="w-16 h-16 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-3xl">
+                                <i class="fa-solid fa-display"></i>
+                            </div>
+                            <span class="text-xs font-extrabold px-3.5 py-1.5 rounded-full bg-emerald-500 text-slate-950 uppercase tracking-wider">
+                                Live Interactive
+                            </span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-3 font-serif">Online Live Yoga Sessions</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed mb-6">
+                            Connect from anywhere in the world through high-definition interactive live video sessions. Designed for busy professionals, homemakers, and beginners.
+                        </p>
+                        <ul class="space-y-3 text-xs sm:text-sm text-slate-300 mb-8">
+                            <li class="flex items-center gap-3">
+                                <i class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+                                <span>Real-time posture feedback and corrections</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <i class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+                                <span>1-on-1 private classes & small group sessions</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <i class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+                                <span>Easy scheduling via Google Meet / Zoom</span>
+                            </li>
+                        </ul>
+                        <a href="https://wa.me/918865033703" target="_blank" class="w-full py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm flex items-center justify-center gap-2 transition-all">
+                            <i class="fa-brands fa-whatsapp"></i> Book Online Class on WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3D FLIPPING PHOTO CARDS SECTION -->
+        <section id="cards" class="py-20 px-4 lg:px-12 bg-slate-950/80 border-t border-amber-500/10">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <span class="text-xs font-bold text-amber-400 uppercase tracking-widest block mb-2">&lt; Visual Gallery & Specialties &gt;</span>
+                    <h2 class="text-3xl sm:text-5xl font-extrabold text-white font-serif">Interactive Photo Cards</h2>
+                    <p class="text-slate-400 mt-3 text-sm sm:text-base">Hover on desktop or tap on mobile to flip the cards and explore Master Sumit Sharma's profile & core yoga specializations.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+                    
+                    <!-- MASTER SUMIT SHARMA PHOTO CARD -->
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <!-- Front of Card -->
+                            <div class="flip-card-front glass-panel flex flex-col justify-between p-5 border-amber-500/50">
+                                <div class="w-full h-44 rounded-2xl overflow-hidden relative bg-slate-800">
+                                    <!-- 📌 REPLACE WITH SUMIT SHARMA's PHOTO URL -->
+                                    <img src="https://user31973.na.imgto.link/public/20261023/0d8e2215084411b28ff9fd58-whatsapp-image-2026-10-23-at-4-05-40-pm.avif">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 to-transparent"></div>
+                                    <span class="absolute bottom-3 left-3 text-xs font-bold px-3 py-1 rounded-full bg-amber-500 text-slate-950">Master Sumit</span>
+                                </div>
+                                <div class="text-left mt-3">
+                                    <h3 class="text-lg font-bold text-white font-serif">Sumit Sharma</h3>
+                                    <p class="text-xs text-amber-400 font-semibold">Master of Yoga & Trainer</p>
+                                </div>
+                                <div class="text-amber-400 text-[11px] font-semibold flex items-center justify-between pt-2 border-t border-slate-800">
+                                    <span>Tap to Flip</span>
+                                    <i class="fa-solid fa-rotate"></i>
+                                </div>
+                            </div>
+                            <!-- Back of Card -->
+                            <div class="flip-card-back glass-panel bg-slate-900 flex flex-col justify-between p-5 text-left border-amber-500/50">
+                                <div>
+                                    <div class="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-base mb-2">
+                                        <i class="fa-solid fa-user-tie"></i>
+                                    </div>
+                                    <h3 class="text-base font-bold text-white font-serif mb-1">Head Trainer</h3>
+                                    <p class="text-[11px] text-slate-300 mb-2">Specialized in online & Delhi-wide offline home yoga sessions.</p>
+                                    <ul class="space-y-1.5 text-[11px] text-slate-300">
+                                        <li><i class="fa-solid fa-check text-amber-400 mr-1"></i> 8865033703</li>
+                                        <li><i class="fa-solid fa-check text-amber-400 mr-1"></i> Delhi (All Directions)</li>
+                                    </ul>
+                                </div>
+                                <a href="tel:8865033703" class="w-full py-2 bg-amber-500 text-slate-950 font-bold text-xs rounded-xl text-center">Call Sumit Ji</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 1: Hatha Yoga -->
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front glass-panel flex flex-col justify-between p-5">
+                                <div class="w-full h-44 rounded-2xl overflow-hidden relative bg-slate-800">
+                                    <img src="https://images.unsplash.com/photo-1545205597-3d9d02c29597?auto=format&fit=crop&w=600&q=80" alt="Hatha Yoga" class="w-full h-full object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 to-transparent"></div>
+                                    <span class="absolute bottom-3 left-3 text-xs font-bold px-3 py-1 rounded-full bg-amber-500 text-slate-950">Hatha Yoga</span>
+                                </div>
+                                <div class="text-left mt-3">
+                                    <h3 class="text-lg font-bold text-white font-serif">Traditional Hatha</h3>
+                                    <p class="text-xs text-slate-300 mt-0.5">Postures & alignment.</p>
+                                </div>
+                                <div class="text-amber-400 text-[11px] font-semibold flex items-center justify-between pt-2 border-t border-slate-800">
+                                    <span>Tap to Flip</span>
+                                    <i class="fa-solid fa-rotate"></i>
+                                </div>
+                            </div>
+                            <div class="flip-card-back glass-panel bg-slate-900 flex flex-col justify-between p-5 text-left border-amber-500/40">
+                                <div>
+                                    <div class="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-base mb-2">
+                                        <i class="fa-solid fa-spa"></i>
+                                    </div>
+                                    <h3 class="text-base font-bold text-white font-serif mb-1">Hatha Benefits</h3>
+                                    <ul class="space-y-1.5 text-[11px] text-slate-300">
+                                        <li><i class="fa-solid fa-check text-amber-400 mr-1"></i> Core stability</li>
+                                        <li><i class="fa-solid fa-check text-amber-400 mr-1"></i> Joint mobility</li>
+                                        <li><i class="fa-solid fa-check text-amber-400 mr-1"></i> For beginners</li>
+                                    </ul>
+                                </div>
+                                <a href="tel:8865033703" class="w-full py-2 bg-amber-500 text-slate-950 font-bold text-xs rounded-xl text-center">Enquire Now</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Pranayama & Breathwork -->
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front glass-panel flex flex-col justify-between p-5">
+                                <div class="w-full h-44 rounded-2xl overflow-hidden relative bg-slate-800">
+                                    <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=600&q=80" alt="Pranayama" class="w-full h-full object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 to-transparent"></div>
+                                    <span class="absolute bottom-3 left-3 text-xs font-bold px-3 py-1 rounded-full bg-emerald-500 text-slate-950">Pranayama</span>
+                                </div>
+                                <div class="text-left mt-3">
+                                    <h3 class="text-lg font-bold text-white font-serif">Breath & Mind</h3>
+                                    <p class="text-xs text-slate-300 mt-0.5">Life force energy.</p>
+                                </div>
+                                <div class="text-amber-400 text-[11px] font-semibold flex items-center justify-between pt-2 border-t border-slate-800">
+                                    <span>Tap to Flip</span>
+                                    <i class="fa-solid fa-rotate"></i>
+                                </div>
+                            </div>
+                            <div class="flip-card-back glass-panel bg-slate-900 flex flex-col justify-between p-5 text-left border-emerald-500/40">
+                                <div>
+                                    <div class="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-base mb-2">
+                                        <i class="fa-solid fa-wind"></i>
+                                    </div>
+                                    <h3 class="text-base font-bold text-white font-serif mb-1">Pranayama Benefits</h3>
+                                    <ul class="space-y-1.5 text-[11px] text-slate-300">
+                                        <li><i class="fa-solid fa-check text-emerald-400 mr-1"></i> Clear breathing</li>
+                                        <li><i class="fa-solid fa-check text-emerald-400 mr-1"></i> Reduces stress</li>
+                                        <li><i class="fa-solid fa-check text-emerald-400 mr-1"></i> Brain oxygenation</li>
+                                    </ul>
+                                </div>
+                                <a href="tel:8865033703" class="w-full py-2 bg-emerald-500 text-slate-950 font-bold text-xs rounded-xl text-center">Enquire Now</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Weight Loss & Power Yoga -->
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front glass-panel flex flex-col justify-between p-5">
+                                <div class="w-full h-44 rounded-2xl overflow-hidden relative bg-slate-800">
+                                    <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=600&q=80" alt="Power Yoga" class="w-full h-full object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 to-transparent"></div>
+                                    <span class="absolute bottom-3 left-3 text-xs font-bold px-3 py-1 rounded-full bg-amber-500 text-slate-950">Power Yoga</span>
+                                </div>
+                                <div class="text-left mt-3">
+                                    <h3 class="text-lg font-bold text-white font-serif">Fat Burn & Vigor</h3>
+                                    <p class="text-xs text-slate-300 mt-0.5">High energy workout.</p>
+                                </div>
+                                <div class="text-amber-400 text-[11px] font-semibold flex items-center justify-between pt-2 border-t border-slate-800">
+                                    <span>Tap to Flip</span>
+                                    <i class="fa-solid fa-rotate"></i>
+                                </div>
+                            </div>
+                            <div class="flip-card-back glass-panel bg-slate-900 flex flex-col justify-between p-5 text-left border-amber-500/40">
+                                <div>
+                                    <div class="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-base mb-2">
+                                        <i class="fa-solid fa-fire"></i>
+                                    </div>
+                                    <h3 class="text-base font-bold text-white font-serif mb-1">Power Yoga Benefits</h3>
+                                    <ul class="space-y-1.5 text-[11px] text-slate-300">
+                                        <li><i class="fa-solid fa-check text-amber-400 mr-1"></i> Calorie burning</li>
+                                        <li><i class="fa-solid fa-check text-amber-400 mr-1"></i> Muscle toning</li>
+                                        <li><i class="fa-solid fa-check text-amber-400 mr-1"></i> Stamina boost</li>
+                                    </ul>
+                                </div>
+                                <a href="tel:8865033703" class="w-full py-2 bg-amber-500 text-slate-950 font-bold text-xs rounded-xl text-center">Enquire Now</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: Therapeutic & Spine Care -->
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front glass-panel flex flex-col justify-between p-5">
+                                <div class="w-full h-44 rounded-2xl overflow-hidden relative bg-slate-800">
+                                    <img src="https://images.unsplash.com/photo-1599447421416-3414500d18a5?auto=format&fit=crop&w=600&q=80" alt="Spine Care" class="w-full h-full object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 to-transparent"></div>
+                                    <span class="absolute bottom-3 left-3 text-xs font-bold px-3 py-1 rounded-full bg-emerald-500 text-slate-950">Therapeutic</span>
+                                </div>
+                                <div class="text-left mt-3">
+                                    <h3 class="text-lg font-bold text-white font-serif">Spine & Joint Care</h3>
+                                    <p class="text-xs text-slate-300 mt-0.5">Relieve back pain.</p>
+                                </div>
+                                <div class="text-amber-400 text-[11px] font-semibold flex items-center justify-between pt-2 border-t border-slate-800">
+                                    <span>Tap to Flip</span>
+                                    <i class="fa-solid fa-rotate"></i>
+                                </div>
+                            </div>
+                            <div class="flip-card-back glass-panel bg-slate-900 flex flex-col justify-between p-5 text-left border-emerald-500/40">
+                                <div>
+                                    <div class="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-base mb-2">
+                                        <i class="fa-solid fa-hand-holding-medical"></i>
+                                    </div>
+                                    <h3 class="text-base font-bold text-white font-serif mb-1">Therapeutic Benefits</h3>
+                                    <ul class="space-y-1.5 text-[11px] text-slate-300">
+                                        <li><i class="fa-solid fa-check text-emerald-400 mr-1"></i> Back & neck relief</li>
+                                        <li><i class="fa-solid fa-check text-emerald-400 mr-1"></i> Posture correction</li>
+                                        <li><i class="fa-solid fa-check text-emerald-400 mr-1"></i> Safe home guidance</li>
+                                    </ul>
+                                </div>
+                                <a href="tel:8865033703" class="w-full py-2 bg-emerald-500 text-slate-950 font-bold text-xs rounded-xl text-center">Enquire Now</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT & BOOKING SECTION -->
+        <section id="contact" class="py-20 px-4 lg:px-12">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Contact Details -->
+                <div class="lg:col-span-5 space-y-6">
+                    <div>
+                        <span class="text-xs font-bold text-amber-400 uppercase tracking-widest block mb-2">&lt; Get in Touch &gt;</span>
+                        <h2 class="text-3xl sm:text-4xl font-extrabold text-white font-serif">Start Your Yoga Journey Today</h2>
+                        <p class="text-slate-300 text-sm mt-3 leading-relaxed">
+                            Book your trial session with <strong class="text-white">Sumit Sharma (Master of Yoga)</strong>. Available for home visits across all directions in New Delhi or live online sessions.
+                        </p>
+                    </div>
+
+                    <div class="space-y-4 pt-2">
+                        <div class="glass-panel p-4 rounded-2xl flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl shrink-0">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs text-slate-400 block">Call Master Sumit</span>
+                                <a href="tel:8865033703" class="text-white font-bold text-base hover:text-amber-400">+91 8865033703</a>
+                            </div>
+                        </div>
+
+                        <div class="glass-panel p-4 rounded-2xl flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl shrink-0">
+                                <i class="fa-brands fa-whatsapp"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs text-slate-400 block">WhatsApp Direct Chat</span>
+                                <a href="https://wa.me/918865033703" target="_blank" class="text-emerald-400 font-bold text-base hover:underline">+91 8865033703</a>
+                            </div>
+                        </div>
+
+                        <!-- Instagram Account Link -->
+                        <div class="glass-panel p-4 rounded-2xl flex items-center gap-4 border-pink-500/30">
+                            <div class="w-12 h-12 rounded-xl bg-pink-500/20 text-pink-400 flex items-center justify-center text-xl shrink-0">
+                                <i class="fa-brands fa-instagram"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs text-slate-400 block">Official Instagram Profile</span>
+                                <a href="
